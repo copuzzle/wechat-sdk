@@ -252,7 +252,7 @@ class Wechat
         $data_arr['appid'] = $this->appid;
         $data_arr['mch_id'] = $this->partnerid;
         $data_arr['nonce_str'] = self::generateNonceStr();
-        $sign = $this->commonSign($data_arr, $this->partnerkey, 'md5');
+        $sign = self::commonSign($data_arr, $this->partnerkey, 'md5');
         $data_arr['sign'] = $sign;
         $xml_pack = '<xml>' . $this->data_to_xml($data_arr) . '</xml>';
         $res = $this->http_post($server_url, $xml_pack);
@@ -266,11 +266,11 @@ class Wechat
         $data_arr = array(
             'appId' => $this->appid,
             'timeStamp' => strval(intval(time())),
-            'nonceStr' => $this->generateNonceStr(),
+            'nonceStr' => self::generateNonceStr(),
             'package' => $package_str,
             'signType' => 'MD5',
         );
-        $data_arr['paySign'] = $this->commonSign($data_arr, $this->partnerkey, 'md5');
+        $data_arr['paySign'] = self::commonSign($data_arr, $this->partnerkey, 'md5');
         return $data_arr;
     }
 
@@ -291,7 +291,7 @@ class Wechat
             };
             $wx_sign = $data_arr['sign'];
             unset($data_arr['sign']);
-            $local_sign = $this->commonSign($data_arr, $this->partnerkey, 'md5');
+            $local_sign = self::commonSign($data_arr, $this->partnerkey, 'md5');
             if ($wx_sign != $local_sign) return false;
             return $data_arr;
         }
